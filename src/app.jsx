@@ -1,44 +1,24 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { TodoForm } from "./components/todo-form";
 import { TodoList } from "./components/todo-list";
 import { TodoResults } from "./components/todo-results";
 import "./index.scss";
 
-const todosTemplate = [
-  {
-    id: 0,
-    label: "Fix an ability to display all tasks",
-    checked: true,
-  },
-  {
-    id: 1,
-    label: "Fix a layout, checkboxes should be listed in a column",
-    checked: true,
-  },
-  {
-    id: 2,
-    label: "Fix an ability to add a new task",
-    checked: true,
-  },
-  {
-    id: 3,
-    label: "Fix an ability to toggle a task",
-    checked: true,
-  },
-  {
-    id: 4,
-    label: "Fix an ability to delete a task",
-    checked: true,
-  },
-  {
-    id: 5,
-    label: "Fix an ability to count completed tasks",
-    checked: true,
-  },
-];
-
 export const App = () => {
-  const [todos, setTodos] = React.useState([]);
+  const [todos, setTodos] = useState([]);
+
+  // Load todos from local storage on component mount
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
+
+  // Save todos to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div className="app">
